@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bgorder"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/id_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="27dp"
+            android:layout_marginTop="153dp"
+            android:fontFamily="@font/nunito"
+            android:text="Mã Đơn Hàng "
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="156dp"
+            android:layout_toRightOf="@+id/id_order"
+            android:fontFamily="@font/nunito"
+            android:text="*"
+            android:textColor="#E53935" />
+
+        <EditText
+            android:id="@+id/edtIdOrder"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-104dp"
+            android:layout_marginTop="186dp"
+            android:layout_toEndOf="@+id/id_order"
+            android:enabled="false"
+            android:hint="" />
+
+        <TextView
+            android:id="@+id/id_staff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="27dp"
+            android:layout_marginTop="255dp"
+            android:fontFamily="@font/nunito"
+            android:text="Mã Nhân Viên"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="255dp"
+            android:layout_toRightOf="@+id/id_staff"
+            android:fontFamily="@font/nunito"
+            android:text="*"
+            android:textColor="#E53935" />
+
+        <EditText
+            android:id="@+id/edtIdStaff"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-108dp"
+            android:layout_marginTop="281dp"
+            android:layout_toEndOf="@+id/id_staff"
+            android:hint="ví dụ :  ph21411" />
+
+        <TextView
+            android:id="@+id/kindOfOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="29dp"
+            android:layout_marginTop="340dp"
+            android:fontFamily="@font/nunito"
+            android:text="LOẠI HÓA ĐƠN"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="340dp"
+            android:layout_toRightOf="@+id/id_staff"
+            android:fontFamily="@font/nunito"
+            android:text="*"
+            android:textColor="#E53935" />
+
+        <Spinner
+            android:id="@+id/spnKind"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-105dp"
+            android:layout_marginTop="377dp"
+            android:layout_toEndOf="@id/id_staff" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="29dp"
+            android:layout_marginTop="435dp"
+            android:fontFamily="@font/nunito"
+            android:text="NGÀY TẠO"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginTop="435dp"
+            android:layout_toRightOf="@+id/id_staff"
+            android:fontFamily="@font/nunito"
+            android:text="*"
+            android:textColor="#E53935" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/date1"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="29dp"
+            android:layout_marginTop="465dp"
+            android:layout_marginRight="40dp"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundMode="filled">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_calendar"
+                android:focusable="false"
+                android:fontFamily="@font/nunito"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnAddOrder"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="105dp"
+            android:layout_marginTop="556dp"
+            android:layout_marginEnd="106dp"
+            android:text="xác nhận"
+            android:textColor="@color/black" />
+
+    </RelativeLayout>
+
+
+</layout>
+
+

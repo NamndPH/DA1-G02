@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragment.FragStaff.FragNVThem">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_list"
+        android:orientation="vertical">
+
+        <!--        Tên nhân viên-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="50dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:fontFamily="@font/roboto"
+                android:text="Tên nhân viên"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textSize="20sp"
+                android:textColor="#FF0000"/>
+        </LinearLayout>
+        <EditText
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:id="@+id/ed_name_fragthemnv"/>
+
+<!--        Tên tài khoản-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:fontFamily="@font/roboto"
+                android:text="Tên tài khoản"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textSize="20dp"
+                android:textColor="#FF0000"/>
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:id="@+id/ed_username_fragthemnv"/>
+
+<!--        Mật khẩu-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:fontFamily="@font/roboto"
+                android:text="Mật khẩu"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textSize="20dp"
+                android:textColor="#FF0000"/>
+        </LinearLayout>
+        <EditText
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:id="@+id/ed_password_fragthemnv"/>
+
+<!--        Số điện thoại-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="25dp"
+                android:fontFamily="@font/roboto"
+                android:text="Số điện thoại"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+        <EditText
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:id="@+id/ed_sdt_fragthemnv"/>
+
+<!--        Nút bấm xác nhận-->
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:text="xác nhận"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto"
+            android:id="@+id/btn_xacnhan_nv"
+            android:background="@drawable/vien_bo_goc"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"/>
+
+    </LinearLayout>
+</layout>
