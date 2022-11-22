@@ -20,7 +20,7 @@ import com.zrapp.warehouse.databinding.FragOrderListBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@SuppressWarnings("unchecked")
 public class FragOrderList extends Fragment {
     FragOrderListBinding binding;
     private List<Order> OrderList = new ArrayList();
