@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Fragment.FragProd.ActivityProdUpdate">
+
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:background="@drawable/bg_list"
+        android:layout_height="match_parent">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/Toolbar02"
+            android:fitsSystemWindows="true"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:background="@color/teal_200"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:minHeight="?attr/actionBarSize"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/roboto"
+            android:text="CẬP NHẬT SẢN PHẨM"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+
+        <TextView
+            android:id="@+id/t2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="27dp"
+            android:layout_marginTop="190dp"
+            android:fontFamily="@font/roboto"
+            android:text="Tên Sản Phẩm "
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="190dp"
+            android:layout_toRightOf="@+id/t2"
+            android:fontFamily="@font/roboto"
+            android:text="*"
+            android:textColor="#E53935" />
+
+        <EditText
+            android:id="@+id/edName_UD"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-108dp"
+            android:layout_marginTop="220dp"
+            android:layout_toEndOf="@+id/t2" />
+
+
+        <TextView
+            android:id="@+id/t5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="29dp"
+            android:layout_marginTop="290dp"
+            android:fontFamily="@font/roboto"
+            android:text="Vị Trí"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="-59dp"
+            android:layout_marginTop="290dp"
+            android:layout_toRightOf="@+id/t2"
+            android:fontFamily="@font/roboto"
+            android:text="*"
+            android:textColor="#E53935" />
+
+        <EditText
+            android:id="@+id/edViTri_UD"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-105dp"
+            android:layout_marginTop="320dp"
+            android:layout_toEndOf="@+id/t2" />
+
+
+        <TextView
+            android:id="@+id/t3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="400dp"
+            android:fontFamily="@font/roboto"
+            android:text="Giá Bán"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="400dp"
+            android:layout_toRightOf="@+id/t3"
+            android:fontFamily="@font/roboto"
+            android:text="*"
+            android:textColor="#E53935" />
+
+        <EditText
+            android:id="@+id/edPrice_UD"
+            android:layout_width="150dp"
+            android:inputType="number"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-56dp"
+            android:layout_marginTop="430dp"
+            android:layout_toEndOf="@+id/t3" />
+
+        <TextView
+            android:id="@+id/t4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="226dp"
+            android:layout_marginTop="400dp"
+            android:fontFamily="@font/roboto"
+            android:text="Giá Vốn"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/edCostPrice_UD"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:inputType="number"
+            android:layout_marginStart="-56dp"
+            android:layout_marginTop="430dp"
+            android:layout_toEndOf="@+id/t4"/>
+
+        <Button
+            android:id="@+id/btnUpdate_prod"
+            android:layout_width="160dp"
+            android:layout_height="45dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="123dp"
+            android:layout_marginTop="556dp"
+            android:layout_marginEnd="128dp"
+            android:text="cập nhật"
+            android:textColor="@color/black" />
+
+
+    </RelativeLayout>
+
+
+</layout>
