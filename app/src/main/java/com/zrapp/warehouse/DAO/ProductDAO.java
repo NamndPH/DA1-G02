@@ -69,4 +69,50 @@ public class ProductDAO {
             e.printStackTrace();
         }
     }
+
+
+    public void deleteProd(String maSp) {
+        try {
+            if (this.objConn != null) {
+                String deleteSQL = "DELETE SanPham WHERE maSP='" + maSp + "'";
+
+                PreparedStatement stmtDelete = this.objConn.prepareStatement(deleteSQL);
+                stmtDelete.execute();
+
+                Log.d("TAG Debug", "deleteProd: finish delete");
+            }
+
+        } catch (Exception e) {
+            Log.e("TAG Lỗi", "deleteProd: Có lỗi xóa dữ liệu ");
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void updateProd(Product prod){
+        try {
+            if (this.objConn != null) {
+                // ghép chuỗi SQL
+                String sqlUpdate = "UPDATE SanPham SET tenSP = N'"+prod.getName()+"' ," +
+                        "viTRi = N'"+prod.getViTri()+"' ," +
+                        "giaBan = '"+prod.getPrice()+"' ," +
+                        "giaVon = '"+prod.getCost_price()+"' ," +
+                        "anhSP = '"+prod.getImg()+"' " +
+                        "WHERE maSP = '"+prod.getId()+"' ";
+
+                PreparedStatement stmtUpdate = this.objConn.prepareStatement(sqlUpdate);
+                stmtUpdate.execute(); // thực thi câu lệnh SQL
+
+                Log.d("zzzzz", "updateProd: finish Update");
+            }
+
+        } catch (Exception e) {
+            Log.e("zzzzzzzzzz", "updateProd: Có lỗi sửa dữ liệu " );
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
