@@ -1,6 +1,9 @@
 package com.zrapp.warehouse.Fragment.FragStaff;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +19,14 @@ import com.zrapp.warehouse.Model.Staff;
 import com.zrapp.warehouse.R;
 import com.zrapp.warehouse.databinding.FragStaffAddBinding;
 
+import java.util.List;
+
 
 public class FragStaffAdd extends Fragment {
 
     FragStaffAddBinding binding;
     StaffDAO dao;
+    List<Staff> listnv;
 
     public FragStaffAdd() {
     }
@@ -34,7 +40,10 @@ public class FragStaffAdd extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        dao = new StaffDAO();
+        listnv = dao.getAll();
 
+        Log.d("TAG Kiem Tra: ", "onViewCreated: "+FragStaffList.flag);
         //Thêm nhân viên
         binding.btnXacnhanNv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,13 +51,23 @@ public class FragStaffAdd extends Fragment {
                 addNhanVien();
             }
         });
+
+        if (FragStaffList.flag == true){
+            binding.edNameFragthemnv.setText(listnv.get(FragStaffList.stt).getName());
+            binding.edUsernameFragthemnv.setText(listnv.get(FragStaffList.stt).getUsername());
+            binding.edPasswordFragthemnv.setText(listnv.get(FragStaffList.stt).getPass());
+            binding.edSdtFragthemnv.setText(listnv.get(FragStaffList.stt).getTel());
+
+        }
     }
 
     private void addNhanVien() {
+        Log.d("TAG Kiem Tra: ", "addNhanVien: "+FragStaffList.stt);
         String edNameNV = binding.edNameFragthemnv.getText().toString();
         String edUsernameNV = binding.edUsernameFragthemnv.getText().toString();
         String edPasswordNV = binding.edPasswordFragthemnv.getText().toString();
         String edSdtNV = binding.edSdtFragthemnv.getText().toString();
+        String maNv = listnv.get(FragStaffList.stt).getId();
         String regexSdt = "^\\d{10}$";
 
         if (edNameNV.equals("")
@@ -57,7 +76,6 @@ public class FragStaffAdd extends Fragment {
             binding.edNameFragthemnv.setHint("Vui lòng không để trống!");
             binding.edUsernameFragthemnv.setHint("Vui lòng không để trống!");
             binding.edPasswordFragthemnv.setHint("Vui lòng không để trống!");
-
             return;
         }
 
@@ -73,16 +91,48 @@ public class FragStaffAdd extends Fragment {
             return;
         }
 
+
         Staff staff = new Staff();
         staff.setName(edNameNV);
-        staff.setUsername(edPasswordNV);
-        staff.setPass(edUsernameNV);
+        staff.setUsername(edUsernameNV);
+        staff.setPass(edPasswordNV);
         staff.setTel(edSdtNV);
-        dao = new StaffDAO();
-        dao.insertStaff(staff);
 
-        loadFrag(new FragStaffList());
-        Toast.makeText(getActivity(), "Thêm thành công!", Toast.LENGTH_SHORT).show();
+        Staff staffUpdate = new Staff();
+        staffUpdate.setName(edNameNV);
+        staffUpdate.setUsername(edUsernameNV);
+        staffUpdate.setPass(edPasswordNV);
+        staffUpdate.setTel(edSdtNV);
+        staffUpdate.setId(maNv);
+
+
+            if (FragStaffList.flag==true){
+                dao.updateRow(staffUpdate);
+                loadFrag(new FragStaffList());
+                Toast.makeText(getActivity(), "Sửa thành công!", Toast.LENGTH_SHORT).show();
+                FragStaffList.flag = false;
+                return;
+            }else {
+                for (int i = 0; i < listnv.size(); i++) {
+                    if (edUsernameNV.equals(listnv.get(i).getUsername())){
+
+                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                        mBuilder.setMessage("Tên tài khoản đã tồn tại!");
+                        mBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        mBuilder.show();
+                        return;
+                    }
+                }
+                dao.insertStaff(staff);
+                loadFrag(new FragStaffList());
+                Toast.makeText(getActivity(), "Thêm thành công!", Toast.LENGTH_SHORT).show();
+                FragStaffList.flag = false;
+            }
     }
 
     public void loadFrag(Fragment fragment) {

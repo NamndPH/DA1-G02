@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -32,7 +33,8 @@ public class FragStaffList extends Fragment implements PopupMenu.OnMenuItemClick
     StaffDAO dao;
     ArrayList<Staff> listStaff;
     StaffAdapter staffAdapter;
-    int stt;
+    public static int stt;
+    public static boolean flag;
 
     public FragStaffList() {
     }
@@ -64,10 +66,8 @@ public class FragStaffList extends Fragment implements PopupMenu.OnMenuItemClick
         binding.lvNv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
                 stt = i;
                 showPopup(view);
-
                 return false;
             }
         });
@@ -103,7 +103,9 @@ public class FragStaffList extends Fragment implements PopupMenu.OnMenuItemClick
                 Toast.makeText(getActivity(), "Information Staff", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.changeStaff:
-                Toast.makeText(getActivity(), "Change Staff", Toast.LENGTH_SHORT).show();
+                flag = true;
+                loadFrag(new FragStaffAdd());
+                Log.d("TAG Kiem Tra: ", "onMenuItemClick: " + flag);
                 return true;
             case R.id.deleteStaff:
                 Staff staff = listStaff.get(stt);
