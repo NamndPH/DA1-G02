@@ -53,6 +53,7 @@ public class StaffDAO {
         return list;
     }
 
+    //Lấy ra tài khoản
     public Staff getStaff(String username) {
         Staff staff = new Staff();
         try {
@@ -117,6 +118,29 @@ public class StaffDAO {
             e.printStackTrace();
         }
     }
+
+    //Sửa thông tin nhân viên
+    public void updateRow(Staff staff){
+
+        try {
+            if (this.objConn != null) {
+                String sqlUpdate = "UPDATE NhanVien SET tenNV= N'" + staff.getName() + "'," +
+                        "taiKhoan= '" + staff.getUsername() + "'," +
+                        "matKhau= '" + staff.getPass() + "'," +
+                        "dienThoai= '" + staff.getTel() + "' " +
+                        "WHERE maNV = '"+ staff.getId()+"'";
+
+                PreparedStatement stmtUpdate = this.objConn.prepareStatement(sqlUpdate);
+                stmtUpdate.execute();
+
+                Log.d("zzzzz", "updateRow: finish Update");
+            }
+        } catch (Exception e) {
+            Log.e("zzzzzzzzzz", "updateRow: Có lỗi sửa dữ liệu " );
+            e.printStackTrace();
+        }
+    }
+
 
     public boolean isExistsStaff(String username) {
         try {
