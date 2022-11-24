@@ -1,5 +1,7 @@
 package com.zrapp.warehouse.Fragment.FragStaff;
 
+import static com.zrapp.warehouse.MainActivity.loadFrag;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,17 +10,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.zrapp.warehouse.DAO.StaffDAO;
-import com.zrapp.warehouse.Model.Staff;
-import com.zrapp.warehouse.R;
 import com.zrapp.warehouse.databinding.FragStaffBinding;
+import com.zrapp.warehouse.model.Staff;
 
 import java.util.ArrayList;
 
 public class FragStaff extends Fragment {
-
     FragStaffBinding binding;
     ArrayList<Staff> list;
     StaffDAO dao;
@@ -35,7 +34,6 @@ public class FragStaff extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         list = new ArrayList<>();
         dao = new StaffDAO();
         list = dao.getAll();
@@ -54,10 +52,4 @@ public class FragStaff extends Fragment {
         });
     }
 
-    public void loadFrag(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }

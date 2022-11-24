@@ -8,15 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zrapp.warehouse.DAO.OrderDao;
 import com.zrapp.warehouse.Fragment.FragOrder.FragOrderDetail;
-import com.zrapp.warehouse.Model.Order;
-import com.zrapp.warehouse.R;
+import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.databinding.ItemOrderBinding;
+import com.zrapp.warehouse.model.Order;
+import com.zrapp.warehouse.R;
 
 import java.util.ArrayList;
 
@@ -52,7 +51,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             public void onClick(View view) {
                 Fragment fragment;
                 fragment = new FragOrderDetail();
-                loadFrag(fragment);
+                MainActivity.loadFrag(fragment);
             }
         });
     }
@@ -72,10 +71,5 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         }
     }
 
-    public void loadFrag(Fragment fragment) {
-        FragmentTransaction transaction = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
+
 }

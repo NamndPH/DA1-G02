@@ -3,7 +3,7 @@ package com.zrapp.warehouse.DAO;
 import android.util.Log;
 
 import com.zrapp.warehouse.Database.DbSqlServer;
-import com.zrapp.warehouse.Model.Order;
+import com.zrapp.warehouse.model.Order;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

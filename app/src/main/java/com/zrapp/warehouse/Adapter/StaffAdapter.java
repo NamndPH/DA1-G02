@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.zrapp.warehouse.Model.Staff;
+import com.zrapp.warehouse.model.Staff;
 import com.zrapp.warehouse.R;
 
 import java.util.ArrayList;

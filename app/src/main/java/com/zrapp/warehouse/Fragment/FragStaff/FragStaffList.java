@@ -1,5 +1,7 @@
 package com.zrapp.warehouse.Fragment.FragStaff;
 
+import static com.zrapp.warehouse.MainActivity.loadFrag;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -16,12 +18,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.zrapp.warehouse.Adapter.StaffAdapter;
 import com.zrapp.warehouse.DAO.StaffDAO;
-import com.zrapp.warehouse.Model.Staff;
+import com.zrapp.warehouse.MainActivity;
+import com.zrapp.warehouse.model.Staff;
 import com.zrapp.warehouse.R;
 import com.zrapp.warehouse.databinding.FragStaffListBinding;
 
@@ -71,6 +74,20 @@ public class FragStaffList extends Fragment implements PopupMenu.OnMenuItemClick
                 return false;
             }
         });
+
+        MainActivity.binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Xử lý chuỗi tìm kiếm;
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Tạo filter để lọc cho đẹp
+                return false;
+            }
+        });
     }
 
     private void changeListStaff() {
@@ -79,14 +96,7 @@ public class FragStaffList extends Fragment implements PopupMenu.OnMenuItemClick
         binding.lvNv.setAdapter(staffAdapter);
     }
 
-    public void loadFrag(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
-    public void showPopup(View v){
+    public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(getActivity(), v);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             popup.setGravity(Gravity.RIGHT);
@@ -98,7 +108,7 @@ public class FragStaffList extends Fragment implements PopupMenu.OnMenuItemClick
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.inforStaff:
                 Toast.makeText(getActivity(), "Information Staff", Toast.LENGTH_SHORT).show();
                 return true;

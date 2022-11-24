@@ -1,7 +1,8 @@
-package com.zrapp.warehouse.Model;
+package com.zrapp.warehouse.model;
 
 public class Staff {
-    private String id, name, username, pass, tel, img;
+    private String id, name, username, pass, tel, img, post;
+    private boolean status;
 
     public Staff() {
     }
@@ -52,5 +53,21 @@ public class Staff {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getPost() {
+        return post;
+    }
+
+    public void setPost(String post) {
+        this.post = post;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

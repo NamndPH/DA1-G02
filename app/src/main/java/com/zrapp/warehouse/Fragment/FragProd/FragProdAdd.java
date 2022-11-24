@@ -9,16 +9,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.zrapp.warehouse.DAO.ProductDAO;
-import com.zrapp.warehouse.Model.Product;
-import com.zrapp.warehouse.R;
+import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.databinding.FragProdAddBinding;
+import com.zrapp.warehouse.model.Product;
 
 
 public class FragProdAdd extends Fragment {
-
     FragProdAddBinding binding;
     ProductDAO dao;
 
@@ -58,23 +56,14 @@ public class FragProdAdd extends Fragment {
                     model.setPrice(Integer.valueOf(giaBan));
                     try {
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         model.setCost_price(0);
                     }
                     model.setImg("");
-
                     dao.insertProd(model);
-
-                    loadFrag(new FragProdList());
+                    MainActivity.loadFrag(new FragProdList());
                 }
             }
         });
-    }
-
-    public void loadFrag(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }

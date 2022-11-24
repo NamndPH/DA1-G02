@@ -1,4 +1,4 @@
-package com.zrapp.warehouse.Model;
+package com.zrapp.warehouse.model;
 
 public class Product {
     private String id;

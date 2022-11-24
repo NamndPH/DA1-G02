@@ -10,14 +10,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.zrapp.warehouse.DAO.ProductDAO;
 import com.zrapp.warehouse.MainActivity;
-import com.zrapp.warehouse.Model.Product;
-import com.zrapp.warehouse.R;
 import com.zrapp.warehouse.databinding.ActivityProdUpdateBinding;
+import com.zrapp.warehouse.model.Product;
+import com.zrapp.warehouse.R;
 
 import java.util.List;
 
 public class ActivityProdUpdate extends AppCompatActivity {
-
     ActivityProdUpdateBinding binding;
     List<Product> listP;
 

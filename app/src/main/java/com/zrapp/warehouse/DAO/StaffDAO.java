@@ -3,7 +3,7 @@ package com.zrapp.warehouse.DAO;
 import android.util.Log;
 
 import com.zrapp.warehouse.Database.DbSqlServer;
-import com.zrapp.warehouse.Model.Staff;
+import com.zrapp.warehouse.model.Staff;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -70,6 +70,8 @@ public class StaffDAO {
                     staff.setPass(resultSet.getString("matKhau"));
                     staff.setTel(resultSet.getString("dienThoai"));
                     staff.setImg(resultSet.getString("anhNV"));
+                    staff.setPost(resultSet.getString("chucVu"));
+                    staff.setStatus(resultSet.getBoolean("trangThai"));
                 }
             }
         } catch (SQLException e) {
@@ -80,14 +82,16 @@ public class StaffDAO {
     }
 
     //Thêm nhân viên
-    public void insertStaff(Staff staff) {
+    public void insertStaff(Staff staff, int status) {
         try {
             if (this.objConn != null) {
                 String insertSQL = "INSERT INTO NhanVien VALUES (default," +
                         "N'" + staff.getName() + "'," +
                         "'" + staff.getUsername() + "'," +
                         "'" + staff.getPass() + "'," +
-                        "'" + staff.getTel() + "',null) ";
+                        "'" + staff.getTel() + "',null," +
+                        "N'" + staff.getPost() + "'," +
+                        status + ") ";
 
                 PreparedStatement stmtInsert = this.objConn.prepareStatement(insertSQL);
                 stmtInsert.execute();
@@ -120,7 +124,7 @@ public class StaffDAO {
     }
 
     //Sửa thông tin nhân viên
-    public void updateRow(Staff staff){
+    public void updateRow(Staff staff) {
 
         try {
             if (this.objConn != null) {
@@ -128,7 +132,7 @@ public class StaffDAO {
                         "taiKhoan= '" + staff.getUsername() + "'," +
                         "matKhau= '" + staff.getPass() + "'," +
                         "dienThoai= '" + staff.getTel() + "' " +
-                        "WHERE maNV = '"+ staff.getId()+"'";
+                        "WHERE maNV = '" + staff.getId() + "'";
 
                 PreparedStatement stmtUpdate = this.objConn.prepareStatement(sqlUpdate);
                 stmtUpdate.execute();
@@ -136,7 +140,7 @@ public class StaffDAO {
                 Log.d("zzzzz", "updateRow: finish Update");
             }
         } catch (Exception e) {
-            Log.e("zzzzzzzzzz", "updateRow: Có lỗi sửa dữ liệu " );
+            Log.e("zzzzzzzzzz", "updateRow: Có lỗi sửa dữ liệu ");
             e.printStackTrace();
         }
     }

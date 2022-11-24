@@ -2,7 +2,6 @@ package com.zrapp.warehouse.Fragment.FragProd;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,23 +12,23 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.zrapp.warehouse.Adapter.ProdAdapter;
 import com.zrapp.warehouse.DAO.ProductDAO;
-import com.zrapp.warehouse.Model.Product;
-import com.zrapp.warehouse.R;
+import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.databinding.FragProdListBinding;
 import com.zrapp.warehouse.databinding.LayoutBottomsheetProdBinding;
+import com.zrapp.warehouse.model.Product;
+import com.zrapp.warehouse.R;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragProdList extends Fragment {
-
     FragProdListBinding binding;
     List<Product> list = new ArrayList<>();
     ProductDAO dao_prod;
@@ -48,7 +47,7 @@ public class FragProdList extends Fragment {
         dao_prod = new ProductDAO();
         list = dao_prod.getAll_Prod();
 
-        adapter = new ProdAdapter(getContext(),list,R.layout.item_prod);
+        adapter = new ProdAdapter(getContext(), list, R.layout.item_prod);
 
         binding.lvSp.setDivider(null);
         binding.lvSp.setDividerHeight(0);
@@ -65,14 +64,29 @@ public class FragProdList extends Fragment {
         binding.btnFloatAddProd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFrag(new FragProdAdd());
+                MainActivity.loadFrag(new FragProdAdd());
             }
         });
 
+        // Làm filter dùng binding.searchBar.setOnQueryTextFocusChangeListener();
+        // Lấy chuỗi tìm kiếm dùng binding.searchBar.getQuery();
+        // hoặc dùng phương thức bên dưới được cả 2
+        MainActivity.binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Xử lý chuỗi tìm kiếm;
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Tạo filter để lọc cho đẹp
+                return false;
+            }
+        });
     }
 
-    public void showBottomSheetDialog(int position){
+    public void showBottomSheetDialog(int position) {
         LayoutBottomsheetProdBinding Binding;
         Binding = LayoutBottomsheetProdBinding.inflate(getLayoutInflater());
 
@@ -82,8 +96,8 @@ public class FragProdList extends Fragment {
 
         Binding.tvNameProd.setText(list.get(position).getName());
         Binding.tvLocationProd.setText(list.get(position).getViTri());
-        Binding.tvPriceProd.setText(list.get(position).getPrice()+" VND");
-        Binding.tvCostpriceProd.setText(list.get(position).getCost_price()+" VND");
+        Binding.tvPriceProd.setText(list.get(position).getPrice() + " VND");
+        Binding.tvCostpriceProd.setText(list.get(position).getCost_price() + " VND");
 
         Binding.btnXoaProd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,11 +112,11 @@ public class FragProdList extends Fragment {
                         dao_prod.deleteProd(list.get(position).getId());
                         Toast.makeText(getContext(), "Xóa sản phẩm thành công!!!", Toast.LENGTH_SHORT).show();
                         bottomSheetDialog.dismiss();
-                        loadFrag(new FragProdList());
+                        MainActivity.loadFrag(new FragProdList());
 
                     }
                 });
-                builder.setNegativeButton("Hủy Xóa",null);
+                builder.setNegativeButton("Hủy Xóa", null);
                 builder.show();
             }
         });
@@ -110,19 +124,12 @@ public class FragProdList extends Fragment {
         Binding.btnCapNhatProd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(),ActivityProdUpdate.class);
+                Intent i = new Intent(getActivity(), ActivityProdUpdate.class);
                 Bundle b = new Bundle();
-                b.putInt("pos",position);
+                b.putInt("pos", position);
                 i.putExtras(b);
                 startActivity(i);
             }
         });
-    }
-
-    public void loadFrag(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }

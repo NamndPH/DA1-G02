@@ -50,7 +50,6 @@
             android:layout_gravity="bottom"
             app:itemIconTint="@color/bottom_nav"
             app:itemTextColor="@color/bottom_nav"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/menu_bnav" />
+            app:labelVisibilityMode="labeled"/>
     </LinearLayout>
 </layout>

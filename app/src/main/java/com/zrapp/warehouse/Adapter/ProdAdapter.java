@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.zrapp.warehouse.Model.Product;
-import com.zrapp.warehouse.R;
 import com.zrapp.warehouse.databinding.ItemProdBinding;
+import com.zrapp.warehouse.model.Product;
+import com.zrapp.warehouse.R;
 
 import java.util.List;
 

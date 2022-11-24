@@ -1,5 +1,7 @@
 package com.zrapp.warehouse.Fragment.FragStaff;
 
+import static com.zrapp.warehouse.MainActivity.loadFrag;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -12,18 +14,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.zrapp.warehouse.DAO.StaffDAO;
-import com.zrapp.warehouse.Model.Staff;
-import com.zrapp.warehouse.R;
 import com.zrapp.warehouse.databinding.FragStaffAddBinding;
+import com.zrapp.warehouse.model.Staff;
 
 import java.util.List;
 
 
 public class FragStaffAdd extends Fragment {
-
     FragStaffAddBinding binding;
     StaffDAO dao;
     List<Staff> listnv;
@@ -128,17 +127,10 @@ public class FragStaffAdd extends Fragment {
                         return;
                     }
                 }
-                dao.insertStaff(staff);
+                dao.insertStaff(staff,1);
                 loadFrag(new FragStaffList());
                 Toast.makeText(getActivity(), "Thêm thành công!", Toast.LENGTH_SHORT).show();
                 FragStaffList.flag = false;
             }
-    }
-
-    public void loadFrag(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }

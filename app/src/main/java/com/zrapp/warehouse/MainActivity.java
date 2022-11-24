@@ -1,19 +1,21 @@
 package com.zrapp.warehouse;
 
+import static com.zrapp.warehouse.SigninActivity.account;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationBarView;
@@ -25,22 +27,27 @@ import com.zrapp.warehouse.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     public static ActivityMainBinding binding;
+    static FragmentManager manager;
+    static ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        loadFrag(new FragProd());
-
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+
+        manager = getSupportFragmentManager();
+        loadFrag(new FragProd());
 
         binding.searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (binding.searchBar.isIconfiedByDefault()) {
                     binding.searchBar.onActionViewExpanded();
                     binding.tvToolbar.setVisibility(View.GONE);
@@ -48,24 +55,6 @@ public class MainActivity extends AppCompatActivity {
                     binding.searchBar.onActionViewCollapsed();
                     binding.tvToolbar.setVisibility(View.VISIBLE);
                 }
-            }
-        });
-
-        // Làm filter dùng binding.searchBar.setOnQueryTextFocusChangeListener();
-        // Lấy chuỗi tìm kiếm dùng binding.searchBar.getQuery();
-        // hoặc dùng phương thức bên dưới được cả 2
-
-        binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //Xử lý chuỗi tìm kiếm;
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //Tạo filter để lọc cho đẹp
-                return false;
             }
         });
 
@@ -97,13 +86,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_option, menu);
+        if (account.getPost().equals("Nhân viên")) {
+            binding.bottomNav.inflateMenu(R.menu.menu_bnav_staff);
+            getMenuInflater().inflate(R.menu.menu_option_staff, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_option_manager, menu);
+            binding.bottomNav.inflateMenu(R.menu.menu_bnav_manager);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                binding.searchBar.setVisibility(View.VISIBLE);
+                actionBar.setDisplayHomeAsUpEnabled(false);
+                break;
+
             case R.id.confirmRequest:
                 Toast.makeText(this, "Tính năng chưa phát triển", Toast.LENGTH_LONG).show();
                 break;
@@ -123,11 +124,23 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void loadFrag(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    public static void loadFrag(Fragment fragment) {
+        FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.frameContent, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+        switch (fragment.getClass().getSimpleName()) {
+            case "FragProdAdd":
+            case "FragOrderAdd":
+            case "FragStaffAdd":
+                binding.searchBar.setVisibility(View.GONE);
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                break;
+
+            default:
+                binding.searchBar.setVisibility(View.VISIBLE);
+                actionBar.setDisplayHomeAsUpEnabled(false);
+        }
     }
 
     public void logOut() {

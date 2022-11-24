@@ -8,14 +8,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.zrapp.warehouse.R;
+import com.zrapp.warehouse.DAO.OrderDao;
+import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.databinding.FragOrderBinding;
+import com.zrapp.warehouse.model.Order;
+
+import java.util.List;
 
 public class FragOrder extends Fragment {
-
     FragOrderBinding binding;
+    OrderDao dao;
+    List<Order> listdh;
 
     public FragOrder() {
     }
@@ -29,20 +33,20 @@ public class FragOrder extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        dao = new OrderDao();
+        listdh = dao.getAll();
+        if (!listdh.isEmpty()) {
+            MainActivity.loadFrag(new FragOrderList());
+        }
+
         binding.btnAddOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Fragment fragment;
                 fragment = new FragOrderAdd();
-                loadFrag(fragment);
+                MainActivity.loadFrag(fragment);
             }
         });
-    }
-
-    public void loadFrag(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }

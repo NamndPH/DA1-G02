@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.zrapp.warehouse.DAO.OrderDao;
+import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.R;
 import com.zrapp.warehouse.databinding.FragOrderAddBinding;
 
@@ -49,7 +50,7 @@ public class FragOrderAdd extends Fragment {
                 String edtDate = binding.edtDate.getText().toString();
                 Fragment fragment;
                 fragment = new FragOrderList();
-                loadFrag(fragment);
+                MainActivity.loadFrag(fragment);
 //                if (edtIdStaff.isEmpty() || edtDate.isEmpty()) {
 //                    Toast.makeText(getActivity(), "vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
 //                } else {
@@ -90,10 +91,5 @@ public class FragOrderAdd extends Fragment {
         datePickerDialog.show();
     }
 
-    public void loadFrag(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
+
 }

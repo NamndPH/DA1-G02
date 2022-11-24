@@ -7,15 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.zrapp.warehouse.Adapter.OrderAdapter;
 import com.zrapp.warehouse.DAO.OrderDao;
-import com.zrapp.warehouse.Model.Order;
-import com.zrapp.warehouse.R;
+import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.databinding.FragOrderListBinding;
+import com.zrapp.warehouse.model.Order;
+import com.zrapp.warehouse.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,16 +52,24 @@ public class FragOrderList extends Fragment {
             public void onClick(View view) {
                 Fragment fragment;
                 fragment = new FragOrderAdd();
-                loadFrag(fragment);
+                MainActivity.loadFrag(fragment);
             }
         });
-        return binding.getRoot();
-    }
 
-    public void loadFrag(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        MainActivity.binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Xử lý chuỗi tìm kiếm;
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Tạo filter để lọc cho đẹp
+                return false;
+            }
+        });
+
+        return binding.getRoot();
     }
 }
