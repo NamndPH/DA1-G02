@@ -173,4 +173,13 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Không", null);
         builder.show();
     }
+
+    @Override
+    public void onBackPressed() {
+        if(!binding.searchBar.isIconified()){
+            binding.searchBar.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
+    }
 }
