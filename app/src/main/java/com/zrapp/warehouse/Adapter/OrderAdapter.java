@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -16,20 +18,24 @@ import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.databinding.ItemOrderBinding;
 import com.zrapp.warehouse.model.Order;
 import com.zrapp.warehouse.R;
+import com.zrapp.warehouse.model.Product;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> implements Filterable {
 
     private Context context;
     private int layout;
-    private ArrayList<Order> OrderList = new ArrayList<>();
+    private ArrayList<Order> OrderList;
+    private ArrayList<Order> listFilter;
     private OrderDao db;
 
     public OrderAdapter(Context context, int layout, ArrayList<Order> orderList) {
         this.context = context;
         this.layout = layout;
-        OrderList = orderList;
+        this.OrderList = orderList;
+        this.listFilter = orderList;
     }
 
     @NonNull
@@ -61,6 +67,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         return OrderList.size();
     }
 
+
+
     public class OrderViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemOrderBinding binding;
@@ -71,5 +79,38 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         }
     }
 
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String strSearch = constraint.toString();
+                if (strSearch.isEmpty()){
+                    OrderList = listFilter;
+                }else {
+                    ArrayList<Order> listO = new ArrayList<>();
+                    for (Order order : listFilter){
+                        if (order.getId_order().toLowerCase().contains(strSearch.toLowerCase())){
+                            listO.add(order);
+                        }
+                    }
+
+                    OrderList = listO;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = OrderList;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                OrderList = (ArrayList<Order>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
 
 }

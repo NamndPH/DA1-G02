@@ -59,13 +59,13 @@ public class FragOrderList extends Fragment {
         MainActivity.binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //Xử lý chuỗi tìm kiếm;
+                adapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Tạo filter để lọc cho đẹp
+                adapter.getFilter().filter(newText);
                 return false;
             }
         });
