@@ -70,4 +70,5 @@ public class Staff {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
 }
