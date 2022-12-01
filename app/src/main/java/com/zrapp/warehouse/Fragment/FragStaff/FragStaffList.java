@@ -1,36 +1,32 @@
 package com.zrapp.warehouse.Fragment.FragStaff;
 
-import static com.zrapp.warehouse.MainActivity.loadFrag;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.zrapp.warehouse.Adapter.StaffAdapter;
 import com.zrapp.warehouse.DAO.StaffDAO;
 import com.zrapp.warehouse.MainActivity;
-import com.zrapp.warehouse.model.Staff;
 import com.zrapp.warehouse.R;
+import com.zrapp.warehouse.databinding.BottomsheetStaffBinding;
 import com.zrapp.warehouse.databinding.FragStaffListBinding;
+import com.zrapp.warehouse.model.Staff;
 
 import java.util.ArrayList;
 
-public class FragStaffList extends Fragment implements PopupMenu.OnMenuItemClickListener {
+public class FragStaffList extends Fragment {
 
     FragStaffListBinding binding;
     StaffDAO dao;
@@ -62,29 +58,32 @@ public class FragStaffList extends Fragment implements PopupMenu.OnMenuItemClick
 
         //Hiển thi danh sách nhân viên
         dao = new StaffDAO();
+
         changeListStaff();
         binding.lvNv.setDivider(null);
         binding.lvNv.setDividerHeight(0);
 
-        binding.lvNv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        binding.lvNv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                stt = i;
-                showPopup(view);
-                return false;
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                showBottomSheeetStaff(i);
             }
         });
 
-        MainActivity.binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        findStaff();
+    }
+
+    private void findStaff() {
+        MainActivity.binding.searchBar.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //Xử lý chuỗi tìm kiếm;
+                staffAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Tạo filter để lọc cho đẹp
+                staffAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -96,40 +95,17 @@ public class FragStaffList extends Fragment implements PopupMenu.OnMenuItemClick
         binding.lvNv.setAdapter(staffAdapter);
     }
 
-    public void showPopup(View v) {
-        PopupMenu popup = new PopupMenu(getActivity(), v);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            popup.setGravity(Gravity.RIGHT);
-        }
-        popup.setOnMenuItemClickListener(this);
-        popup.inflate(R.menu.popup_menu_staff);
-        popup.show();
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.inforStaff:
-                Toast.makeText(getActivity(), "Information Staff", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.changeStaff:
-                flag = true;
-                loadFrag(new FragStaffAdd());
-                Log.d("TAG Kiem Tra: ", "onMenuItemClick: " + flag);
-                return true;
-            case R.id.deleteStaff:
-                Staff staff = listStaff.get(stt);
-                deleteStaff(staff.getId(), staff.getName());
-                return true;
-            default:
-                return false;
-        }
+    public void loadFrag(Fragment fragment) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frameContent, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     public void deleteStaff(String maNv, String nameNv) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         mBuilder.setMessage("Bạn muốn xoá nhân viên " + nameNv + "?");
-        mBuilder.setPositiveButton("Xác Nhận", new DialogInterface.OnClickListener() {
+        mBuilder.setNegativeButton("Xác Nhận", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dao.deleteRow(maNv);
@@ -140,12 +116,53 @@ public class FragStaffList extends Fragment implements PopupMenu.OnMenuItemClick
         });
 
 
-        mBuilder.setNegativeButton("Huỷ", new DialogInterface.OnClickListener() {
+        mBuilder.setPositiveButton("Huỷ", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
         mBuilder.show();
+    }
+
+    private void showBottomSheeetStaff(int i) {
+        BottomsheetStaffBinding bindingbts;
+        bindingbts = BottomsheetStaffBinding.inflate(getLayoutInflater());
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+        bottomSheetDialog.setContentView(bindingbts.getRoot());
+        bottomSheetDialog.show();
+
+        bindingbts.btsNameStaff.setText(listStaff.get(i).getName());
+        bindingbts.btsIdStaff.setText(listStaff.get(i).getId());
+        bindingbts.btsUsernameStaff.setText(listStaff.get(i).getUsername());
+        bindingbts.btsPhoneStaff.setText(listStaff.get(i).getTel());
+        bindingbts.btsPositionStaff.setText(listStaff.get(i).getPost());
+
+        bindingbts.btsBtnDeleteStaff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Staff staff = listStaff.get(i);
+                deleteStaff(staff.getId(), staff.getName());
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bindingbts.btsBtnUpdateStaff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flag = true;
+                stt = i;
+                Intent i = new Intent(getActivity(), ActivityStaffUpdate.class);
+                startActivity(i);
+                bottomSheetDialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeListStaff();
     }
 }

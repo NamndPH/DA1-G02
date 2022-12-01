@@ -136,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                 binding.searchBar.setVisibility(View.GONE);
                 actionBar.setDisplayHomeAsUpEnabled(true);
                 break;
-
             default:
                 binding.searchBar.setVisibility(View.VISIBLE);
                 actionBar.setDisplayHomeAsUpEnabled(false);

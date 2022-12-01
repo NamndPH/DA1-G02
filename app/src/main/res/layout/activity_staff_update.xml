@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Fragment.FragStaff.FragNVThem">
+    tools:context=".Fragment.FragStaff.ActivityStaffUpdate">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,11 +10,23 @@
         android:background="@drawable/bg_list"
         android:orientation="vertical">
 
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/teal_200"
+            android:id="@+id/toolbar_update_staff"
+            android:fitsSystemWindows="true"
+            app:navigationIcon="@drawable/ic_back"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:minHeight="?attr/actionBarSize"
+            android:gravity="center"
+            />
+
         <!--        Tên nhân viên-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
             <TextView
@@ -36,7 +48,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/ed_name_fragthemnv"
+            android:id="@+id/ed_name_updatenv"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="22dp" />
@@ -67,42 +79,13 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/ed_username_fragthemnv"
+            android:id="@+id/ed_username_updatenv"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="22dp" />
 
         <!--        Mật khẩu-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            android:id="@+id/tv_password_fragnvthem">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:fontFamily="@font/roboto"
-                android:text="Mật khẩu"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" *"
-                android:textColor="#FF0000"
-                android:textSize="20dp" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/ed_password_fragthemnv"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp" />
 
         <!--        Số điện thoại-->
         <TextView
@@ -117,7 +100,7 @@
             android:textSize="15sp" />
 
         <EditText
-            android:id="@+id/ed_sdt_fragthemnv"
+            android:id="@+id/ed_sdt_updatenv"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="22dp" />
@@ -153,12 +136,12 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/ed_position"
+                android:id="@+id/ed_position_update"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content" />
 
             <ImageView
-                android:id="@+id/dropdown_position"
+                android:id="@+id/dropdown_position_update"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_drop_down_24"
@@ -169,16 +152,15 @@
 
         <!--        Nút bấm xác nhận-->
         <Button
-            android:id="@+id/btn_xacnhan_nv"
+            android:id="@+id/btn_update_nv"
             android:layout_width="250dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
             android:background="@drawable/vien_bo_goc"
             android:fontFamily="@font/roboto"
-            android:text="xác nhận"
+            android:text="Cập nhật"
             android:textColor="@color/black"
             android:textStyle="bold" />
-
     </LinearLayout>
 </layout>
