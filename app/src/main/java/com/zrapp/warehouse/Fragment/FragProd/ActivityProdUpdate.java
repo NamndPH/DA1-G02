@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.zrapp.warehouse.DAO.ProductDAO;
 import com.zrapp.warehouse.MainActivity;
@@ -19,9 +20,7 @@ import java.util.List;
 public class ActivityProdUpdate extends AppCompatActivity {
     ActivityProdUpdateBinding binding;
     List<Product> listP;
-
     ProductDAO dao_prod;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,6 @@ public class ActivityProdUpdate extends AppCompatActivity {
         dao_prod = new ProductDAO();
         listP = dao_prod.getAll_Prod();
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.Toolbar02);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,14 +42,10 @@ public class ActivityProdUpdate extends AppCompatActivity {
             }
         });
 
-
         binding.edNameUD.setText(listP.get(index).getName());
         binding.edViTriUD.setText(listP.get(index).getViTri());
         binding.edPriceUD.setText(listP.get(index).getPrice()+"");
         binding.edCostPriceUD.setText(listP.get(index).getCost_price()+"");
-
-
-
 
         binding.btnUpdateProd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,9 +71,10 @@ public class ActivityProdUpdate extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
