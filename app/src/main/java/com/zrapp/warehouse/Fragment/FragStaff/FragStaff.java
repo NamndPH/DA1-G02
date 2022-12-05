@@ -38,9 +38,9 @@ public class FragStaff extends Fragment {
         dao = new StaffDAO();
         list = dao.getAll();
 
-        if (list.isEmpty()){
+        if (list.isEmpty()) {
             loadFrag(new FragStaff());
-        }else{
+        } else {
             loadFrag(new FragStaffList());
         }
 

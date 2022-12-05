@@ -1,95 +1,166 @@
 package com.zrapp.warehouse.Fragment.FragOrder;
 
+import static com.zrapp.warehouse.MainActivity.loadFrag;
+import static com.zrapp.warehouse.SigninActivity.account;
+
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.zrapp.warehouse.Adapter.ListDetailsAdapter;
 import com.zrapp.warehouse.DAO.OrderDao;
+import com.zrapp.warehouse.DAO.OrderDetailsDao;
+import com.zrapp.warehouse.DAO.ProductDAO;
 import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.R;
 import com.zrapp.warehouse.databinding.FragOrderAddBinding;
+import com.zrapp.warehouse.model.Order;
+import com.zrapp.warehouse.model.OrderDetails;
+import com.zrapp.warehouse.model.Product;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class FragOrderAdd extends Fragment {
-
     FragOrderAddBinding binding;
-    private OrderDao db = new OrderDao();
+    OrderDao orderDao;
+    OrderDetailsDao detailsDao;
+    ProductDAO prodDAO;
+    List<OrderDetails> list = new ArrayList<>();
+    ListDetailsAdapter adapter;
 
     public FragOrderAdd() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragOrderAddBinding.inflate(inflater, container, false);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        binding.edtDate.setText(sdf.format(c.getTime()));
-
-        String[] kind = {"nhập", " xuất"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, kind);
-        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        binding.spnKind.setAdapter(adapter);
-
-        binding.btnAddOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String edtIdOrder = binding.edtIdOrder.getText().toString();
-                String edtIdStaff = binding.edtIdStaff.getText().toString();
-                String spnKind = binding.spnKind.getSelectedItem().toString();
-                String edtDate = binding.edtDate.getText().toString();
-                Fragment fragment;
-                fragment = new FragOrderList();
-                MainActivity.loadFrag(fragment);
-//                if (edtIdStaff.isEmpty() || edtDate.isEmpty()) {
-//                    Toast.makeText(getActivity(), "vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Order order = new Order(edtIdOrder, edtIdStaff, spnKind, edtDate);
-//                    db.insertRow(order);
-//
-//                    Toast.makeText(getActivity(), "thêm thành công ", Toast.LENGTH_SHORT).show();
-//                    Fragment fragment;
-//                    fragment = new FragListProduct();
-//                    loadFrag(fragment);
-//                }
-            }
-        });
-
-        binding.edtDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectDate();
-            }
-        });
         return binding.getRoot();
     }
 
-    private void selectDate() {
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DATE);
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                calendar.set(i, i1, i2);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                binding.edtDate.setText(simpleDateFormat.format(calendar.getTime()));
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        orderDao = new OrderDao();
+        detailsDao = new OrderDetailsDao();
+        prodDAO = new ProductDAO();
+        adapter = new ListDetailsAdapter(getActivity(), list);
+        binding.lv.setAdapter(adapter);
+
+        binding.tvOrderID.setText(orderDao.getOrderID(binding.actvType.getText().toString().equals("Nhập") ? 0 : 1));
+        binding.tvStaffID.setText(account.getId());
+
+        //Filter loại DH
+        String[] arr = {"Nhập", "Xuất"};
+        ArrayAdapter typeAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arr);
+        binding.actvType.setAdapter(typeAdapter);
+        binding.actvType.setThreshold(1);
+        binding.actvType.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                binding.tvOrderID.setText(orderDao.getOrderID(binding.actvType.getText().toString().equals("Nhập") ? 0 : 1));
             }
-        }, year, month, day);
-        datePickerDialog.show();
+        });
+
+        //Filter sản phẩm
+        ArrayList<String> listProd = new ArrayList<>();
+        for (Product prod : prodDAO.getAll_Prod()) {
+            listProd.add(prod.getName());
+        }
+        ArrayAdapter prodAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listProd);
+        binding.actvProd.setAdapter(prodAdapter);
+        binding.actvProd.setThreshold(1);
+
+        //Thêm sản phẩm vào giỏ hàng
+        binding.actvProd.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                addProd();
+                binding.actvProd.setText("");
+            }
+        });
+
+        //Hoàn tất đơn hàng
+        binding.btnCofirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addOrder();
+                loadFrag(new FragOrderList());
+            }
+        });
     }
 
+    public void addProd() {
+        try {
+            if (validation() < 0) {
+                Toast.makeText(getActivity(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            } else {
+                Product prod = prodDAO.getProdByName(binding.actvProd.getText().toString());
+                int pos = checkProd(list, binding.actvProd.getText().toString());
+                Order order = new Order(binding.tvOrderID.getText().toString(), binding.actvType.getText().toString());
+                OrderDetails details = new OrderDetails(prod, order, 1);
+                if (pos >= 0) {
+                    int soluong = list.get(pos).getQty();
+                    details.setQty(soluong + 1);
+                    list.set(pos, details);
+                } else {
+                    list.add(details);
+                }
+                adapter.changeDataset(list);
+            }
+        } catch (Exception ex) {
+            Log.e("Error", ex.toString());
+        }
+    }
 
+    public void addOrder() {
+        try {
+            Order order = new Order();
+            order.setId_staff(account.getId());
+            order.setKindOfOrder(binding.actvType.getText().toString());
+            orderDao.insertRow(order);
+            for (OrderDetails details : list) {
+                detailsDao.insertOrderDetail(details);
+            }
+        } catch (Exception ex) {
+            Log.e("Error", ex.toString());
+        }
+    }
+
+    public int checkProd(List<OrderDetails> lsHD, String prodName) {
+        int pos = -1;
+        for (int i = 0; i < lsHD.size(); i++) {
+            OrderDetails details = lsHD.get(i);
+            if (details.getProd().getName().equalsIgnoreCase(prodName)) {
+                pos = i;
+                break;
+            }
+        }
+        return pos;
+    }
+
+    public int validation() {
+        if (binding.actvType.getText().toString().isEmpty() ||
+                binding.actvProd.getText().toString().isEmpty()) {
+            return -1;
+        }
+        return 1;
+    }
 }

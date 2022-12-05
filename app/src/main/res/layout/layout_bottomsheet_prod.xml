@@ -142,7 +142,6 @@
             android:layout_weight="1"
             android:text="Cập Nhật"
             android:textColor="@color/black"/>
-
     </LinearLayout>
 </LinearLayout>
 </layout>

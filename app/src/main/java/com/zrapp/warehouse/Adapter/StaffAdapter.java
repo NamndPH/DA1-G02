@@ -1,18 +1,30 @@
 package com.zrapp.warehouse.Adapter;
 
+import static com.zrapp.warehouse.RequestActivity.adapter;
+import static com.zrapp.warehouse.RequestActivity.binding;
+
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
+import com.zrapp.warehouse.ChangePassActivity;
+import com.zrapp.warehouse.DAO.StaffDAO;
+import com.zrapp.warehouse.RequestActivity;
+import com.zrapp.warehouse.SigninActivity;
 import com.zrapp.warehouse.model.Staff;
 import com.zrapp.warehouse.R;
 
@@ -25,6 +37,7 @@ public class StaffAdapter extends BaseAdapter implements Filterable {
     private ArrayList<Staff> list;
     private LayoutInflater inflater;
     public ArrayList<Staff> listFilter;
+    StaffDAO dao;
 
     public StaffAdapter(@NonNull Context context, int resource, ArrayList<Staff> list) {
         this.context = context;
@@ -32,6 +45,7 @@ public class StaffAdapter extends BaseAdapter implements Filterable {
         this.list = list;
         this.listFilter = list;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        dao = new StaffDAO();
     }
 
     @Override

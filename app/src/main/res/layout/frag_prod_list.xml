@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
-        android:id="@+id/rl"
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -13,8 +13,6 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true">
-
-
         </ListView>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -28,7 +26,5 @@
             android:text="THÊM SẢN PHẨM"
             app:icon="@drawable/ic_add"
             app:layout_anchor="@id/lv_sp" />
-
-
     </RelativeLayout>
 </layout>

@@ -46,8 +46,6 @@ public class ProdAdapter extends BaseAdapter implements Filterable {
         return 0;
     }
 
-
-
     @Override
     public View getView(int i, View convertView, ViewGroup container) {
         ItemProdBinding binding;
@@ -57,11 +55,11 @@ public class ProdAdapter extends BaseAdapter implements Filterable {
             convertView = binding.getRoot();
             convertView.setTag(R.layout.item_prod, binding);
         } else {
-            binding = ((ItemProdBinding ) convertView.getTag(R.layout.item_prod));
+            binding = ((ItemProdBinding) convertView.getTag(R.layout.item_prod));
         }
 
         binding.tvnameProd.setText(list.get(i).getName());
-        binding.tvPriceProd.setText(String.valueOf(list.get(i).getPrice())+" vnđ");
+        binding.tvPriceProd.setText(String.valueOf(list.get(i).getPrice()) + " vnđ");
         binding.imgItem.setImageResource(R.drawable.img_prod_default);
 
         return convertView;
@@ -73,12 +71,12 @@ public class ProdAdapter extends BaseAdapter implements Filterable {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String strSearch = constraint.toString();
-                if (strSearch.isEmpty()){
+                if (strSearch.isEmpty()) {
                     list = listFilter;
-                }else {
+                } else {
                     List<Product> listProd = new ArrayList<>();
-                    for (Product prod : listFilter){
-                        if (prod.getName().toLowerCase().contains(strSearch.toLowerCase())){
+                    for (Product prod : listFilter) {
+                        if (prod.getName().toLowerCase().contains(strSearch.toLowerCase())) {
                             listProd.add(prod);
                         }
                     }
@@ -88,7 +86,6 @@ public class ProdAdapter extends BaseAdapter implements Filterable {
 
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = list;
-
                 return filterResults;
             }
 

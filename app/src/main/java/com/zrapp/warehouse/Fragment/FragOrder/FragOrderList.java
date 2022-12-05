@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -24,29 +26,22 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class FragOrderList extends Fragment {
     FragOrderListBinding binding;
-    private List<Order> OrderList = new ArrayList();
-    private OrderAdapter adapter;
+    public static List<Order> OrderList = new ArrayList();
+    public static OrderAdapter adapter;
+    OrderDao dao;
 
     public FragOrderList() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragOrderListBinding.inflate(inflater, container, false);
 
-        OrderDao db = new OrderDao();
-        OrderList = db.getAll();
-
+        dao = new OrderDao();
+        OrderList = dao.getAll();
         adapter = new OrderAdapter((Context) getActivity(), R.layout.item_order, (ArrayList<Order>) OrderList);
         binding.rcvOrder.setAdapter(adapter);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        binding.rcvOrder.setLayoutManager(gridLayoutManager);
 
-        for (int i = 0; i < OrderList.size(); i++) {
-            Order order = OrderList.get(i);
-            Log.d("zzzzz", "onCreate: phần tử thứ " + i + ":  id = " + order.getId_order() + ", name = " + order.getId_staff());
-        }
         binding.btnFloat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +65,21 @@ public class FragOrderList extends Fragment {
             }
         });
 
+        binding.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.binding.searchBar.setIconifiedByDefault(true);
+            }
+        });
+
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        OrderList = dao.getAll();
+        adapter = new OrderAdapter((Context) getActivity(), R.layout.item_order, (ArrayList<Order>) OrderList);
+        binding.rcvOrder.setAdapter(adapter);
     }
 }

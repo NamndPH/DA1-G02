@@ -2,8 +2,12 @@ package com.zrapp.warehouse;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +16,7 @@ import com.zrapp.warehouse.DAO.StaffDAO;
 import com.zrapp.warehouse.databinding.ActivitySigninBinding;
 import com.zrapp.warehouse.model.Staff;
 
-public class SigninActivity extends AppCompatActivity implements View.OnKeyListener {
+public class SigninActivity extends AppCompatActivity {
     ActivitySigninBinding binding;
     StaffDAO dao;
     public static Staff account = null;
@@ -23,10 +27,26 @@ public class SigninActivity extends AppCompatActivity implements View.OnKeyListe
         binding = ActivitySigninBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        dao = new StaffDAO();
+        dao = new StaffDAO(); // Khi test app ofline thì "rào"
 
-        binding.edUsername.setOnKeyListener(this);
-        binding.edPassword.setOnKeyListener(this);
+        binding.edPassword.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (i == KeyEvent.KEYCODE_ENTER)) {
+                    //                    signIn();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        binding.passToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                passToggle(binding.passToggle, binding.edPassword);
+            }
+        });
 
         binding.tvRegister.setOnClickListener(view -> {
             Intent i = new Intent(SigninActivity.this, RegisterActivity.class);
@@ -35,36 +55,44 @@ public class SigninActivity extends AppCompatActivity implements View.OnKeyListe
 
         binding.btnLogin.setOnClickListener(view -> {
             signIn();
+
+            //Sử sụng khi test app ofline - Khi test app online thì "rào"
+            //            account = new Staff("NV0001","admin","admin","admin","null","","Quản lý",true);
+            //            Intent i = new Intent(SigninActivity.this, MainActivity.class);
+            //            startActivity(i);
         });
     }
 
-    @Override
-    public boolean onKey(View view, int i, KeyEvent keyEvent) {
-        if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
-                (i == KeyEvent.KEYCODE_ENTER)) {
-            signIn();
-            return true;
-        }
-        return false;
-    }
-
-    public void signIn(){
+    // Khi test app oflinethì "rào"
+    public void signIn() {
         String username = binding.edUsername.getText().toString();
         String pass = binding.edPassword.getText().toString();
         if (username.isEmpty() || pass.isEmpty()) {
-            CustomToast.makeText(SigninActivity.this, "Vui lòng nhập đủ thông tin", CustomToast.SHORT, CustomToast.ERROR).show();
+            Toast.makeText(SigninActivity.this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
         } else {
             account = dao.getStaff(username);
-            if (account.getUsername() == null) {
-                CustomToast.makeText(SigninActivity.this, "Tài khoản không tồn tại!!", CustomToast.SHORT, CustomToast.ERROR).show();
+            if (!dao.isExistsStaff(username)) {
+                Toast.makeText(SigninActivity.this, "Tài khoản không tồn tại!!", Toast.LENGTH_SHORT).show();
             } else if (!pass.equals(account.getPass())) {
-                CustomToast.makeText(SigninActivity.this, "Mật khẩu không đúng!!", CustomToast.SHORT, CustomToast.ERROR).show();
+                Toast.makeText(SigninActivity.this, "Mật khẩu không đúng!!", Toast.LENGTH_SHORT).show();
             } else if (!account.isStatus()) {
-                CustomToast.makeText(SigninActivity.this, "Vui lòng chờ xác nhận!!", CustomToast.SHORT, CustomToast.WARNING).show();
+                Toast.makeText(SigninActivity.this, "Vui lòng chờ xác nhận", Toast.LENGTH_SHORT).show();
             } else {
                 Intent i = new Intent(SigninActivity.this, MainActivity.class);
                 startActivity(i);
             }
+        }
+    }
+
+    public void passToggle(ImageView view, EditText ed) {
+        if (view.getTag().equals("blind")) {
+            view.setTag("eye");
+            view.setImageResource(R.drawable.ic_eye);
+            ed.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        } else {
+            view.setTag("blind");
+            view.setImageResource(R.drawable.ic_eye_blind);
+            ed.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         }
     }
 }

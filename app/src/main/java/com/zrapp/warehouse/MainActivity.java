@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -22,7 +22,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.zrapp.warehouse.Fragment.FragOrder.FragOrder;
 import com.zrapp.warehouse.Fragment.FragProd.FragProd;
 import com.zrapp.warehouse.Fragment.FragStaff.FragStaff;
-import com.zrapp.warehouse.Fragment.FragStatistic;
+import com.zrapp.warehouse.Fragment.FragStatistic.FragStatistic;
 import com.zrapp.warehouse.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,28 +35,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setSupportActionBar(binding.toolbar);
 
+        setSupportActionBar(binding.toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
 
         manager = getSupportFragmentManager();
-        loadFrag(new FragProd());
-
-        binding.searchBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (binding.searchBar.isIconfiedByDefault()) {
-                    binding.searchBar.onActionViewExpanded();
-                    binding.tvToolbar.setVisibility(View.GONE);
-                } else {
-                    binding.searchBar.onActionViewCollapsed();
-                    binding.tvToolbar.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        loadFrag(new FragProd()); // Khi test app ofline thì thay đổi frag phù hợp với nhu cầu
 
         binding.bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -79,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
                         binding.tvToolbar.setText("Thống kê");
                         break;
                 }
+                return true;
+            }
+        });
+
+        binding.frameContent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                binding.searchBar.setIconifiedByDefault(true);
                 return true;
             }
         });
@@ -106,11 +101,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.confirmRequest:
-                Toast.makeText(this, "Tính năng chưa phát triển", Toast.LENGTH_LONG).show();
+                Intent intentR = new Intent(getApplicationContext(), RequestActivity.class);
+                startActivity(intentR);
                 break;
 
             case R.id.changePass:
-                Toast.makeText(this, "Tính năng chưa phát triển", Toast.LENGTH_LONG).show();
+                Intent intentC = new Intent(getApplicationContext(), ChangePassActivity.class);
+                startActivity(intentC);
                 break;
 
             case R.id.logOut:
@@ -149,7 +146,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
+                Intent intent = new Intent(getApplicationContext(), SigninActivity.class);
+                startActivity(intent);
             }
         });
         builder.setPositiveButton("Không", null);
@@ -175,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(!binding.searchBar.isIconified()){
+        if (!binding.searchBar.isIconified()) {
             binding.searchBar.setIconified(true);
             return;
         }

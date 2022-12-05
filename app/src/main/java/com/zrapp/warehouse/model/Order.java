@@ -6,7 +6,10 @@ public class Order {
     private String kindOfOrder;
     private String date;
 
-
+    public Order(String id_order, String kindOfOrder) {
+        this.id_order = id_order;
+        this.kindOfOrder = kindOfOrder;
+    }
 
     public String getId_order() {
         return id_order;
@@ -41,12 +44,5 @@ public class Order {
     }
 
     public Order() {
-    }
-
-    public Order(String id_order, String id_staff, String kindOfOrder, String date) {
-        this.id_order = id_order;
-        this.id_staff = id_staff    ;
-        this.kindOfOrder = kindOfOrder;
-        this.date = date;
     }
 }

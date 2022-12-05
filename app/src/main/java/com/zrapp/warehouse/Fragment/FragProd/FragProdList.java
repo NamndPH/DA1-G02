@@ -1,9 +1,13 @@
 package com.zrapp.warehouse.Fragment.FragProd;
 
+import static com.zrapp.warehouse.SigninActivity.account;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,11 +23,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.zrapp.warehouse.Adapter.ProdAdapter;
 import com.zrapp.warehouse.DAO.ProductDAO;
 import com.zrapp.warehouse.MainActivity;
+import com.zrapp.warehouse.SigninActivity;
 import com.zrapp.warehouse.databinding.FragProdListBinding;
 import com.zrapp.warehouse.databinding.LayoutBottomsheetProdBinding;
 import com.zrapp.warehouse.model.Product;
 import com.zrapp.warehouse.R;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +52,8 @@ public class FragProdList extends Fragment {
         list = dao_prod.getAll_Prod();
 
         adapter = new ProdAdapter(getContext(), list, R.layout.item_prod);
-
         binding.lvSp.setDivider(null);
         binding.lvSp.setDividerHeight(0);
-
         binding.lvSp.setAdapter(adapter);
 
         binding.lvSp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,9 +70,6 @@ public class FragProdList extends Fragment {
             }
         });
 
-        // Làm filter dùng binding.searchBar.setOnQueryTextFocusChangeListener();
-        // Lấy chuỗi tìm kiếm dùng binding.searchBar.getQuery();
-        // hoặc dùng phương thức bên dưới được cả 2
         MainActivity.binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -93,6 +92,12 @@ public class FragProdList extends Fragment {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
         bottomSheetDialog.setContentView(Binding.getRoot());
         bottomSheetDialog.show();
+        if (account.getPost().equals("Nhân viên")) {
+            Binding.tvcostpricesp.setVisibility(View.GONE);
+            Binding.tvCostpriceProd.setVisibility(View.GONE);
+            Binding.btnXoaProd.setVisibility(View.GONE);
+            Binding.btnCapNhatProd.setVisibility(View.GONE);
+        }
 
         Binding.tvNameProd.setText(list.get(position).getName());
         Binding.tvLocationProd.setText(list.get(position).getViTri());
@@ -104,8 +109,9 @@ public class FragProdList extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Xóa Sản Phẩm?");
-                builder.setMessage("Sản phẩm này sẽ được xóa khỏi danh sách các sản phẩm trong cửa hàng của bạn." +
-                        "Bạn có chắc rằng muốn thực hiện?");
+                builder.setMessage(
+                        "Sản phẩm này sẽ được xóa khỏi danh sách các sản phẩm trong cửa hàng của bạn." +
+                                "Bạn có chắc rằng muốn thực hiện?");
                 builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -113,7 +119,6 @@ public class FragProdList extends Fragment {
                         Toast.makeText(getContext(), "Xóa sản phẩm thành công!!!", Toast.LENGTH_SHORT).show();
                         bottomSheetDialog.dismiss();
                         MainActivity.loadFrag(new FragProdList());
-
                     }
                 });
                 builder.setNegativeButton("Hủy Xóa", null);

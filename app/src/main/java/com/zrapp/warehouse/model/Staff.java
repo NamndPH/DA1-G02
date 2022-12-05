@@ -7,6 +7,17 @@ public class Staff {
     public Staff() {
     }
 
+    public Staff(String id, String name, String username, String pass, String tel, String img, String post, boolean status) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.pass = pass;
+        this.tel = tel;
+        this.img = img;
+        this.post = post;
+        this.status = status;
+    }
+
     public String getId() {
         return id;
     }

@@ -15,7 +15,6 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="469dp"
-            android:background="@drawable/vien_bo_goc"
             android:text="thêm nhân viên"
             android:textColor="@color/black" />
 

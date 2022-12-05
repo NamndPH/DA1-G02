@@ -2,22 +2,58 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_launcher"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="vertical"
         tools:context=".LauncherActivity">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:text="Warehouse"
+            android:textColor="@color/black"
+            android:textSize="36dp"
+            android:textStyle="bold" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <TextView
+            android:layout_marginTop="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:text="Kho hàng là nơi lưu trữ hàng hoá vật lý"
+            android:textColor="@color/black"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:text="Mục đích của kho hàng là lưu trữ tạm thời các sản phẩm với"
+            android:textColor="@color/black"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:text="số lượng nhất định trước khi vận chuyển ra ngoài"
+            android:textColor="@color/black"
+            android:textSize="13dp" />
+
+        <Button
+            android:layout_marginTop="170dp"
             android:id="@+id/btnStart"
-            style="@style/Widget.ExtendedFAB"
-            android:layout_width="140dp"
-            android:layout_height="60dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="45dp"
-            android:layout_marginBottom="45dp"
-            android:text=" Get Started" />
-    </RelativeLayout>
+            style="@style/Widget.ButtonRound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginBottom="40dp"
+            android:text="Bắt đầu"
+            android:textSize="18dp" />
+    </LinearLayout>
 </layout>

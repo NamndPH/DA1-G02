@@ -15,7 +15,6 @@ import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.databinding.FragProdAddBinding;
 import com.zrapp.warehouse.model.Product;
 
-
 public class FragProdAdd extends Fragment {
     FragProdAddBinding binding;
     ProductDAO dao;

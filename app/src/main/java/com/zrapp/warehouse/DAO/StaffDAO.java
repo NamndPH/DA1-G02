@@ -26,15 +26,11 @@ public class StaffDAO {
 
         try {
             if (this.objConn != null) {
-
                 String sqlQuery = "SELECT * FROM NhanVien";
-
                 Statement statement = this.objConn.createStatement();
-
                 ResultSet resultSet = statement.executeQuery(sqlQuery);
-
+                resultSet.next();
                 while (resultSet.next()) {
-
                     Staff staff = new Staff();
                     staff.setId(resultSet.getString("maNV"));
                     staff.setName(resultSet.getString("tenNV"));
@@ -42,7 +38,6 @@ public class StaffDAO {
                     staff.setPass(resultSet.getString("matKhau"));
                     staff.setTel(resultSet.getString("dienThoai"));
                     staff.setPost(resultSet.getString("chucVu"));
-
                     list.add(staff);
                 }
             }
@@ -50,7 +45,6 @@ public class StaffDAO {
             Log.e("TAG Lỗi", "getAll: Có lỗi truy vấn dữ liệu ");
             e.printStackTrace();
         }
-
         return list;
     }
 
@@ -63,44 +57,90 @@ public class StaffDAO {
 
                 Statement statement = this.objConn.createStatement();
                 ResultSet resultSet = statement.executeQuery(sqlQuery);
-
                 while (resultSet.next()) {
                     staff.setId(resultSet.getString("maNV"));
                     staff.setName(resultSet.getString("tenNV"));
                     staff.setUsername(resultSet.getString("taiKhoan"));
                     staff.setPass(resultSet.getString("matKhau"));
                     staff.setTel(resultSet.getString("dienThoai"));
-                    staff.setPost(resultSet.getString("chucVu"));
                     staff.setImg(resultSet.getString("anhNV"));
+                    staff.setPost(resultSet.getString("chucVu"));
                     staff.setStatus(resultSet.getBoolean("trangThai"));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return staff;
+    }
+
+    //Lấy ra tài khoản theo id
+    public Staff getStaffByID(String id) {
+        Staff staff = new Staff();
+        try {
+            if (this.objConn != null) {
+                String sqlQuery = "SELECT * FROM NhanVien WHERE maNV = '" + id + "'";
+
+                Statement statement = this.objConn.createStatement();
+                ResultSet resultSet = statement.executeQuery(sqlQuery);
+                while (resultSet.next()) {
+                    staff.setId(resultSet.getString("maNV"));
+                    staff.setName(resultSet.getString("tenNV"));
+                    staff.setUsername(resultSet.getString("taiKhoan"));
+                    staff.setPass(resultSet.getString("matKhau"));
+                    staff.setTel(resultSet.getString("dienThoai"));
+                    staff.setImg(resultSet.getString("anhNV"));
+                    staff.setPost(resultSet.getString("chucVu"));
+                    staff.setStatus(resultSet.getBoolean("trangThai"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return staff;
+    }
+
+    //Lấy ra danh sách tài khoản yêu cầu
+    public ArrayList<Staff> getRequest() {
+        ArrayList<Staff> list = new ArrayList<>();
+        try {
+            if (this.objConn != null) {
+                String sqlQuery = "SELECT * FROM NhanVien WHERE trangThai='false'";
+                Statement statement = this.objConn.createStatement();
+                ResultSet resultSet = statement.executeQuery(sqlQuery);
+                while (resultSet.next()) {
+                    Staff staff = new Staff();
+                    staff.setId(resultSet.getString("maNV"));
+                    staff.setName(resultSet.getString("tenNV"));
+                    staff.setUsername(resultSet.getString("taiKhoan"));
+                    staff.setPass(resultSet.getString("matKhau"));
+                    staff.setTel(resultSet.getString("dienThoai"));
+                    staff.setImg(resultSet.getString("anhNV"));
+                    staff.setPost(resultSet.getString("chucVu"));
+                    staff.setStatus(resultSet.getBoolean("trangThai"));
+                    list.add(staff);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     //Thêm nhân viên
     public void insertStaff(Staff staff, int status) {
         try {
             if (this.objConn != null) {
-                String insertSQL = "INSERT INTO NhanVien VALUES (default," +
-                        "N'" + staff.getName() + "'," +
-                        "'" + staff.getUsername() + "'," +
-                        "'" + staff.getPass() + "'," +
-                        "'" + staff.getTel() + "',null," +
-                        "N'" + staff.getPost() + "'," +
-                        "'" + status + "'" +
-                        ") ";
+                String insertSQL =
+                        "INSERT INTO NhanVien VALUES (default," + "N'" + staff.getName() + "'," +
+                                "'" + staff.getUsername() + "'," + "'" + staff.getPass() + "'," +
+                                "'" + staff.getTel() + "',null," + "N'" + staff.getPost() + "'," +
+                                status + ") ";
 
                 PreparedStatement stmtInsert = this.objConn.prepareStatement(insertSQL);
                 stmtInsert.execute();
-
                 Log.d("TAG Debug", "insertRow: finish insert");
             }
-
         } catch (Exception e) {
             Log.e("TAG Lỗi", "insertRow: Có lỗi thêm dữ liệu ");
             e.printStackTrace();
@@ -115,10 +155,8 @@ public class StaffDAO {
 
                 PreparedStatement stmtDelete = this.objConn.prepareStatement(deleteSQL);
                 stmtDelete.execute();
-
-                Log.d("TAG Debug", "deleteRow: finish insert");
+                Log.d("TAG Debug", "deleteRow: delete success");
             }
-
         } catch (Exception e) {
             Log.e("TAG Lỗi", "deleteRow: Có lỗi xóa dữ liệu ");
             e.printStackTrace();
@@ -126,37 +164,32 @@ public class StaffDAO {
     }
 
     //Sửa thông tin nhân viên
-    public void updateRow(Staff staff){
-
+    public void updateRow(Staff staff) {
         try {
             if (this.objConn != null) {
-                String sqlUpdate = "UPDATE NhanVien SET tenNV= N'" + staff.getName() + "'," +
-                        "taiKhoan= '" + staff.getUsername() + "'," +
-                        "matKhau= '" + staff.getPass() + "'," +
-                        "dienThoai= '" + staff.getTel() + "'," +
-                        "chucVu= '" + staff.getPost() + "' " +
-                        "WHERE maNV = '"+ staff.getId()+"'";
+                String sqlUpdate = "UPDATE NhanVien SET " + "tenNV = '" + staff.getName() + "'," +
+                        "taiKhoan = '" + staff.getUsername() + "'," + "matKhau ='" +
+                        staff.getPass() + "'," + "dienThoai ='" + staff.getTel() + "'," + "anhNV=" +
+                        staff.getImg() + "," + "chucVu='" + staff.getPost() + "'," + "trangThai='" +
+                        staff.isStatus() + "' " + "WHERE maNV = '" + staff.getId() + "'";
 
                 PreparedStatement stmtUpdate = this.objConn.prepareStatement(sqlUpdate);
                 stmtUpdate.execute();
-
-                Log.d("zzzzz", "updateRow: finish Update");
+                Log.d("zzzzz", "updateRow: success");
             }
         } catch (Exception e) {
-            Log.e("zzzzzzzzzz", "updateRow: Có lỗi sửa dữ liệu " );
+            Log.e("zzzzzzzzzz", "updateRow: Có lỗi sửa dữ liệu");
             e.printStackTrace();
         }
     }
-
 
     public boolean isExistsStaff(String username) {
         try {
             if (this.objConn != null) {
                 String sqlQuery = "SELECT * FROM NhanVien WHERE maNV='" + username + "'";
 
-                Statement statement = this.objConn.createStatement();
-                ResultSet resultSet = statement.executeQuery(sqlQuery);
-
+                PreparedStatement statement = this.objConn.prepareStatement(sqlQuery);
+                statement.execute();
             }
         } catch (SQLException e) {
             e.printStackTrace();
