@@ -97,7 +97,7 @@ public class ProductDAO {
                 String insertSQL =
                         "INSERT INTO SanPham VALUES (default,N'" + objProd.getName() + "',N'" +
                                 objProd.getViTri() + "'," + "'" + objProd.getPrice() + "', '" +
-                                objProd.getCost_price() + "', null) ";
+                                objProd.getCost_price() + "', '"+objProd.getImg()+"') ";
                 PreparedStatement stmtInsert = this.objConn.prepareStatement(insertSQL);
                 stmtInsert.execute();
                 Log.d("zzzzz", "insertRow: finish insert");

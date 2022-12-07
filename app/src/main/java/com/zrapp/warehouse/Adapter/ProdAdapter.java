@@ -1,6 +1,7 @@
 package com.zrapp.warehouse.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.squareup.picasso.Picasso;
 import com.zrapp.warehouse.databinding.ItemProdBinding;
 import com.zrapp.warehouse.model.Product;
 import com.zrapp.warehouse.R;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -53,15 +56,22 @@ public class ProdAdapter extends BaseAdapter implements Filterable {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             binding = ItemProdBinding.inflate(inflater, container, false);
             convertView = binding.getRoot();
-            convertView.setTag(R.layout.item_prod, binding);
+            convertView.setTag(layout, binding);
         } else {
             binding = ((ItemProdBinding) convertView.getTag(R.layout.item_prod));
         }
 
         binding.tvnameProd.setText(list.get(i).getName());
-        binding.tvPriceProd.setText(String.valueOf(list.get(i).getPrice()) + " vnđ");
-        binding.imgItem.setImageResource(R.drawable.img_prod_default);
 
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat NF = NumberFormat.getInstance(locale);
+        binding.tvPriceProd.setText(NF.format(list.get(i).getPrice())+ " vnd");
+
+        if (list.get(i).getImg().equals("null")){
+            binding.imgItem.setImageResource(R.drawable.img_prod_default);
+        }else {
+            Picasso.get().load(list.get(i).getImg()).into(binding.imgItem);
+        }
         return convertView;
     }
 
