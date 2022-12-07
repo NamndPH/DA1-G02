@@ -38,6 +38,7 @@ public class StaffDAO {
                     staff.setPass(resultSet.getString("matKhau"));
                     staff.setTel(resultSet.getString("dienThoai"));
                     staff.setPost(resultSet.getString("chucVu"));
+                    staff.setImg(resultSet.getString("anhNV"));
                     list.add(staff);
                 }
             }
@@ -134,7 +135,7 @@ public class StaffDAO {
                 String insertSQL =
                         "INSERT INTO NhanVien VALUES (default," + "N'" + staff.getName() + "'," +
                                 "'" + staff.getUsername() + "'," + "'" + staff.getPass() + "'," +
-                                "'" + staff.getTel() + "',null," + "N'" + staff.getPost() + "'," +
+                                "'" + staff.getTel() + "','"+ staff.getImg() +"'," + "N'" + staff.getPost() + "'," +
                                 status + ") ";
 
                 PreparedStatement stmtInsert = this.objConn.prepareStatement(insertSQL);
@@ -168,9 +169,8 @@ public class StaffDAO {
         try {
             if (this.objConn != null) {
                 String sqlUpdate = "UPDATE NhanVien SET " + "tenNV = '" + staff.getName() + "'," +
-                        "taiKhoan = '" + staff.getUsername() + "'," + "matKhau ='" +
-                        staff.getPass() + "'," + "dienThoai ='" + staff.getTel() + "'," + "anhNV=" +
-                        staff.getImg() + "," + "chucVu='" + staff.getPost() + "'," + "trangThai='" +
+                        "taiKhoan = '" + staff.getUsername() + "'," + "dienThoai ='" + staff.getTel() + "'," + "anhNV='" +
+                        staff.getImg() + "'," + "chucVu='" + staff.getPost() + "'," + "trangThai='" +
                         staff.isStatus() + "' " + "WHERE maNV = '" + staff.getId() + "'";
 
                 PreparedStatement stmtUpdate = this.objConn.prepareStatement(sqlUpdate);

@@ -3,6 +3,7 @@ package com.zrapp.warehouse.Fragment.FragStaff;
 import static com.zrapp.warehouse.MainActivity.loadFrag;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,15 +35,14 @@ public class FragStaff extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        list = new ArrayList<>();
         dao = new StaffDAO();
         list = dao.getAll();
 
-        if (list.isEmpty()) {
-            loadFrag(new FragStaff());
-        } else {
+        if (!list.isEmpty()) {
             loadFrag(new FragStaffList());
         }
+
+        loadFrag(new FragStaffList());
 
         binding.btnAddnv.setOnClickListener(new View.OnClickListener() {
             @Override

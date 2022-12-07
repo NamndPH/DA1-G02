@@ -57,9 +57,9 @@ public class SigninActivity extends AppCompatActivity {
             signIn();
 
             //Sử sụng khi test app ofline - Khi test app online thì "rào"
-            //            account = new Staff("NV0001","admin","admin","admin","null","","Quản lý",true);
-            //            Intent i = new Intent(SigninActivity.this, MainActivity.class);
-            //            startActivity(i);
+//                        account = new Staff("NV0001","admin","admin","admin","null","","Quản lý",true);
+//                        Intent i = new Intent(SigninActivity.this, MainActivity.class);
+//                        startActivity(i);
         });
     }
 
