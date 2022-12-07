@@ -10,12 +10,53 @@
         android:background="@drawable/bg_list"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:background="#d1d1d1"
+            android:layout_height="100dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+            <Button
+                android:id="@+id/btn_addImgAvatar"
+                android:layout_width="160dp"
+                android:layout_height="44dp"
+                android:layout_marginLeft="10dp"
+                app:icon="@drawable/ic_img"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:text="Tải ảnh lên"
+                android:backgroundTint="@color/white"
+                />
+            <Button
+                android:id="@+id/btn_captureImgAvatar"
+                android:layout_width="160dp"
+                android:layout_height="44dp"
+                android:layout_marginLeft="10dp"
+                app:icon="@drawable/imga"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:text="Chụp ảnh"
+                android:backgroundTint="@color/white"
+                />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/img_add_avt"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="10dp"
+               />
+        </LinearLayout>
+
         <!--        Tên nhân viên-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="20dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,7 +179,7 @@
 
         <RelativeLayout
             android:layout_width="350dp"
-            android:layout_gravity="center"
+            android:layout_marginLeft="22dp"
             android:layout_height="wrap_content">
 
             <EditText
@@ -166,7 +207,6 @@
             android:id="@+id/btn_xacnhan_nv"
             android:textColor="@color/black"
             android:layout_gravity="center"
-            android:layout_marginTop="100dp"/>
-
+            android:layout_marginTop="30dp"/>
     </LinearLayout>
 </layout>

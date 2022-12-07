@@ -58,7 +58,6 @@ public class FragStaffList extends Fragment {
 
         //Hiển thi danh sách nhân viên
         dao = new StaffDAO();
-
         changeListStaff();
         binding.lvNv.setDivider(null);
         binding.lvNv.setDividerHeight(0);
