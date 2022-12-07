@@ -34,7 +34,7 @@ public class SigninActivity extends AppCompatActivity {
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
                         (i == KeyEvent.KEYCODE_ENTER)) {
-                    //                    signIn();
+//                                        signIn();
                     return true;
                 }
                 return false;

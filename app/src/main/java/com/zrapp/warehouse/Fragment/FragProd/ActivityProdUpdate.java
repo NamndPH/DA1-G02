@@ -2,9 +2,14 @@ package com.zrapp.warehouse.Fragment.FragProd;
 
 import static com.zrapp.warehouse.SigninActivity.account;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +18,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.zrapp.warehouse.ChangePassActivity;
 import com.zrapp.warehouse.DAO.ProductDAO;
 import com.zrapp.warehouse.MainActivity;
@@ -24,7 +37,10 @@ import com.zrapp.warehouse.databinding.ActivityProdUpdateBinding;
 import com.zrapp.warehouse.model.Product;
 import com.zrapp.warehouse.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 public class ActivityProdUpdate extends AppCompatActivity {
     ActivityProdUpdateBinding binding;
@@ -32,12 +48,24 @@ public class ActivityProdUpdate extends AppCompatActivity {
 
     ProductDAO dao_prod;
 
+    private Uri filePath;
+
+    private final int PICK_IMAGE_REQUEST = 71;
+
+    FirebaseStorage storage;
+    StorageReference storageReference;
+    String temp;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityProdUpdateBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        storage = FirebaseStorage.getInstance("gs://warehouse-a4e2b.appspot.com");
+        storageReference = storage.getReference();
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -54,6 +82,21 @@ public class ActivityProdUpdate extends AppCompatActivity {
         binding.edViTriUD.setText(listP.get(index).getViTri());
         binding.edPriceUD.setText(listP.get(index).getPrice() + "");
         binding.edCostPriceUD.setText(listP.get(index).getCost_price() + "");
+        Picasso.get().load(listP.get(index).getImg()).into(binding.imgUpdate);
+
+        binding.btnAddImgUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takeaphoto();
+            }
+        });
+
+        binding.btnUpImgUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
+            }
+        });
 
         binding.btnUpdateProd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +106,7 @@ public class ActivityProdUpdate extends AppCompatActivity {
                 String locationSp = binding.edViTriUD.getText().toString();
                 int priceSp = Integer.valueOf(binding.edPriceUD.getText().toString());
                 int costpriceSp = Integer.valueOf(binding.edCostPriceUD.getText().toString());
-                String img = "";
+                String img = temp;
 
                 Product prod_update = new Product();
                 prod_update.setId(idSp);
@@ -149,5 +192,87 @@ public class ActivityProdUpdate extends AppCompatActivity {
         });
         builder.setPositiveButton("Không", null);
         builder.show();
+    }
+
+
+
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    private void takeaphoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
+    }
+
+    private void uploadImage(Uri filePath) {
+        if (filePath != null) {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+            ref.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                    ref.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            temp = task.getResult().toString();// lấy url để lưu vào database
+                        }
+                    });
+                    Toast.makeText(ActivityProdUpdate.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(ActivityProdUpdate.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred() /
+                            taskSnapshot.getTotalByteCount());
+                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+            try {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                binding.imgUpdate.setImageBitmap(bitmap);
+                uploadImage(getImgUri(bitmap));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null &&
+                data.getData() != null) {
+            filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                binding.imgUpdate.setImageBitmap(bitmap);
+                uploadImage(filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Uri getImgUri(Bitmap bit){
+        ByteArrayOutputStream bytew = new ByteArrayOutputStream();
+        bit.compress(Bitmap.CompressFormat.PNG,100,bytew);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(),bit,"title",null);
+        return  Uri.parse(path);
     }
 }

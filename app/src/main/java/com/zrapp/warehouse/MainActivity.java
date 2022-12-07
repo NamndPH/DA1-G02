@@ -24,6 +24,7 @@ import com.zrapp.warehouse.Fragment.FragProd.FragProd;
 import com.zrapp.warehouse.Fragment.FragStaff.FragStaff;
 import com.zrapp.warehouse.Fragment.FragStatistic.FragStatistic;
 import com.zrapp.warehouse.databinding.ActivityMainBinding;
+import com.zrapp.warehouse.databinding.LayoutBottomsheetProdBinding;
 
 public class MainActivity extends AppCompatActivity {
     public static ActivityMainBinding binding;
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Không", null);
         builder.show();
     }
+
 
     @Override
     public void onBackPressed() {

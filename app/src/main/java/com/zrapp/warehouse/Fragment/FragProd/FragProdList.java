@@ -29,8 +29,10 @@ import com.zrapp.warehouse.databinding.LayoutBottomsheetProdBinding;
 import com.zrapp.warehouse.model.Product;
 import com.zrapp.warehouse.R;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class FragProdList extends Fragment {
     FragProdListBinding binding;
@@ -101,8 +103,12 @@ public class FragProdList extends Fragment {
 
         Binding.tvNameProd.setText(list.get(position).getName());
         Binding.tvLocationProd.setText(list.get(position).getViTri());
-        Binding.tvPriceProd.setText(list.get(position).getPrice() + " VND");
-        Binding.tvCostpriceProd.setText(list.get(position).getCost_price() + " VND");
+
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat NF = NumberFormat.getInstance(locale);
+
+        Binding.tvPriceProd.setText(NF.format(list.get(position).getPrice()) + " VND");
+        Binding.tvCostpriceProd.setText(NF.format(list.get(position).getCost_price()) + " VND");
 
         Binding.btnXoaProd.setOnClickListener(new View.OnClickListener() {
             @Override

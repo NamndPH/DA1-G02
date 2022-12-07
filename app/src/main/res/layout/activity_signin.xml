@@ -55,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand"
                     android:hint="Nhập tài khoản của bạn"
+                    android:text="admin"
                     android:inputType="text" />
             </LinearLayout>
 
@@ -87,6 +88,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/quicksand"
                         android:hint="Nhập mật khẩu của bạn"
+                        android:text="admin"
                         android:inputType="textPassword" />
 
                     <ImageView
