@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.zrapp.warehouse.databinding.ItemProdBinding;
 import com.zrapp.warehouse.model.Product;
@@ -23,14 +24,12 @@ public class ProdAdapter extends BaseAdapter implements Filterable {
 
     private Context context;
     private List<Product> list;
-    private int layout;
 
     private List<Product> listFilter;
 
-    public ProdAdapter(Context context, List<Product> list, int layout) {
+    public ProdAdapter(Context context, List<Product> list) {
         this.context = context;
         this.list = list;
-        this.layout = layout;
         this.listFilter = list;
     }
 
@@ -56,22 +55,33 @@ public class ProdAdapter extends BaseAdapter implements Filterable {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             binding = ItemProdBinding.inflate(inflater, container, false);
             convertView = binding.getRoot();
-            convertView.setTag(layout, binding);
+            convertView.setTag(R.layout.item_prod, binding);
         } else {
             binding = ((ItemProdBinding) convertView.getTag(R.layout.item_prod));
         }
 
         binding.tvnameProd.setText(list.get(i).getName());
-
         Locale locale = new Locale("vi", "VN");
         NumberFormat NF = NumberFormat.getInstance(locale);
-        binding.tvPriceProd.setText(NF.format(list.get(i).getPrice())+ " vnd");
-
-        if (list.get(i).getImg().equals("null")){
+        binding.tvPriceProd.setText(NF.format(list.get(i).getPrice()) + " vnd");
+        Log.i("TAG info", "onBindViewHolder: " + i);
+        if (list.get(i).getImg().equals("null")) {
             binding.imgItem.setImageResource(R.drawable.img_prod_default);
-        }else {
-            Picasso.get().load(list.get(i).getImg()).into(binding.imgItem);
+        } else {
+            Picasso.get().load(list.get(i).getImg()).into(binding.imgItem, new Callback() {
+                @Override
+                public void onSuccess() {
+                    if (i == list.size() - 1) {
+                    }
+                }
+
+                @Override
+                public void onError(Exception e) {
+
+                }
+            });
         }
+
         return convertView;
     }
 

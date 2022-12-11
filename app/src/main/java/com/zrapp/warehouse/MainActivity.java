@@ -24,7 +24,6 @@ import com.zrapp.warehouse.Fragment.FragProd.FragProd;
 import com.zrapp.warehouse.Fragment.FragStaff.FragStaff;
 import com.zrapp.warehouse.Fragment.FragStatistic.FragStatistic;
 import com.zrapp.warehouse.databinding.ActivityMainBinding;
-import com.zrapp.warehouse.databinding.LayoutBottomsheetProdBinding;
 
 public class MainActivity extends AppCompatActivity {
     public static ActivityMainBinding binding;
@@ -46,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         manager = getSupportFragmentManager();
         loadFrag(new FragProd()); // Khi test app ofline thì thay đổi frag phù hợp với nhu cầu
 
+//        binding.bottomNav.setItemHorizontalTranslationEnabled(true);
         binding.bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
             case "FragProdAdd":
             case "FragOrderAdd":
             case "FragStaffAdd":
+            case "FragStatistic":
                 binding.searchBar.setVisibility(View.GONE);
                 actionBar.setDisplayHomeAsUpEnabled(true);
                 break;

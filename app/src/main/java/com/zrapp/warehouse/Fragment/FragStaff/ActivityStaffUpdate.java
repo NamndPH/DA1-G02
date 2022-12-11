@@ -1,24 +1,18 @@
 package com.zrapp.warehouse.Fragment.FragStaff;
 
+
 import static com.zrapp.warehouse.Fragment.FragStaff.FragStaffAdd.storage;
 import static com.zrapp.warehouse.Fragment.FragStaff.FragStaffAdd.storageReference;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -36,9 +30,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.zrapp.warehouse.DAO.StaffDAO;
-import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.R;
-import com.zrapp.warehouse.databinding.ActivityProdUpdateBinding;
 import com.zrapp.warehouse.databinding.ActivityStaffUpdateBinding;
 import com.zrapp.warehouse.model.Staff;
 

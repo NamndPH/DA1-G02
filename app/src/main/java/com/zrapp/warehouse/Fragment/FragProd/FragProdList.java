@@ -5,9 +5,7 @@ import static com.zrapp.warehouse.SigninActivity.account;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,11 +17,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.zrapp.warehouse.Adapter.ProdAdapter;
 import com.zrapp.warehouse.DAO.ProductDAO;
 import com.zrapp.warehouse.MainActivity;
-import com.zrapp.warehouse.SigninActivity;
 import com.zrapp.warehouse.databinding.FragProdListBinding;
 import com.zrapp.warehouse.databinding.LayoutBottomsheetProdBinding;
 import com.zrapp.warehouse.model.Product;
@@ -53,17 +55,8 @@ public class FragProdList extends Fragment {
         dao_prod = new ProductDAO();
         list = dao_prod.getAll_Prod();
 
-        adapter = new ProdAdapter(getContext(), list, R.layout.item_prod);
-        binding.lvSp.setDivider(null);
-        binding.lvSp.setDividerHeight(0);
+        adapter = new ProdAdapter(getContext(),list);
         binding.lvSp.setAdapter(adapter);
-
-        binding.lvSp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showBottomSheetDialog(position);
-            }
-        });
 
         binding.btnFloatAddProd.setOnClickListener(new View.OnClickListener() {
             @Override

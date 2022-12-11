@@ -54,7 +54,7 @@
                     android:fontFamily="@font/roboto"
                     android:paddingTop="3dp"
                     android:text="0338269641"
-                    android:textColor="@color/teal_200"
+                    android:textColor="@color/secondaryLightColor"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 

@@ -14,7 +14,6 @@
             android:layout_marginTop="60dp"
             android:layout_width="360dp"
             android:layout_marginLeft="25dp"
-            android:background="@drawable/vien_bo_goc2"
             android:layout_height="100dp">
 
             <LinearLayout

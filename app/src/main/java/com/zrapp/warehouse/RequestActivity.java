@@ -1,7 +1,5 @@
 package com.zrapp.warehouse;
 
-import static com.zrapp.warehouse.SigninActivity.account;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,23 +7,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.zrapp.warehouse.Adapter.StaffAdapter;
 import com.zrapp.warehouse.DAO.StaffDAO;
-import com.zrapp.warehouse.databinding.ActivityChangePassBinding;
 import com.zrapp.warehouse.databinding.ActivityRequestBinding;
 import com.zrapp.warehouse.model.Staff;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class RequestActivity extends AppCompatActivity {
     public static ActivityRequestBinding binding;

@@ -1,7 +1,5 @@
 package com.zrapp.warehouse.Fragment.FragOrder;
 
-import static com.zrapp.warehouse.MainActivity.loadFrag;
-import static com.zrapp.warehouse.RequestActivity.adapter;
 import static com.zrapp.warehouse.SigninActivity.account;
 
 import androidx.annotation.NonNull;
@@ -22,9 +20,6 @@ import com.zrapp.warehouse.ChangePassActivity;
 import com.zrapp.warehouse.DAO.OrderDao;
 import com.zrapp.warehouse.DAO.OrderDetailsDao;
 import com.zrapp.warehouse.DAO.StaffDAO;
-import com.zrapp.warehouse.Fragment.FragProd.ActivityProdUpdate;
-import com.zrapp.warehouse.Fragment.FragProd.FragProdList;
-import com.zrapp.warehouse.MainActivity;
 import com.zrapp.warehouse.R;
 import com.zrapp.warehouse.RequestActivity;
 import com.zrapp.warehouse.SigninActivity;
@@ -34,8 +29,6 @@ import com.zrapp.warehouse.model.OrderDetails;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class OrderDetailsActivity extends AppCompatActivity {
     ActivityOrderDetailsBinding binding;

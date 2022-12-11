@@ -45,9 +45,7 @@ public class FragOrderList extends Fragment {
         binding.btnFloat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment;
-                fragment = new FragOrderAdd();
-                MainActivity.loadFrag(fragment);
+                MainActivity.loadFrag(new FragOrderAdd());
             }
         });
 
@@ -71,7 +69,6 @@ public class FragOrderList extends Fragment {
                 MainActivity.binding.searchBar.setIconifiedByDefault(true);
             }
         });
-
         return binding.getRoot();
     }
 
@@ -81,5 +78,8 @@ public class FragOrderList extends Fragment {
         OrderList = dao.getAll();
         adapter = new OrderAdapter((Context) getActivity(), R.layout.item_order, (ArrayList<Order>) OrderList);
         binding.rcvOrder.setAdapter(adapter);
+        if (OrderList.isEmpty()){
+            MainActivity.loadFrag(new FragOrder());
+        }
     }
 }

@@ -11,17 +11,14 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_update_staff"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@color/teal_200"
-            android:id="@+id/toolbar_update_staff"
+            android:background="@color/secondaryLightColor"
             android:fitsSystemWindows="true"
-            app:navigationIcon="@drawable/ic_back"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:minHeight="?attr/actionBarSize"
             android:gravity="center"
-            />
-
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back" />
 
         <!--        Tên nhân viên-->
         <LinearLayout
@@ -133,8 +130,8 @@
 
         <RelativeLayout
             android:layout_width="350dp"
-            android:layout_marginLeft="22dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
             <EditText
                 android:id="@+id/ed_position_update"
@@ -145,9 +142,9 @@
                 android:id="@+id/dropdown_position_update"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_drop_down_24"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_drop_down_24" />
 
         </RelativeLayout>
 
@@ -184,10 +181,8 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
-            android:background="@drawable/vien_bo_goc"
             android:fontFamily="@font/roboto"
             android:text="Cập nhật"
-            android:textColor="@color/black"
             android:textStyle="bold" />
     </LinearLayout>
 </layout>

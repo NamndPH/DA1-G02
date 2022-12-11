@@ -44,6 +44,7 @@ public class FragOrderAdd extends Fragment {
     ProductDAO prodDAO;
     List<OrderDetails> list = new ArrayList<>();
     ListDetailsAdapter adapter;
+    String[] arr;
 
     public FragOrderAdd() {
     }
@@ -68,7 +69,7 @@ public class FragOrderAdd extends Fragment {
         binding.tvStaffID.setText(account.getId());
 
         //Filter loại DH
-        String[] arr = {"Nhập", "Xuất"};
+        arr = new String[]{"Nhập", "Xuất"};
         ArrayAdapter typeAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arr);
         binding.actvType.setAdapter(typeAdapter);
         binding.actvType.setThreshold(1);
@@ -112,19 +113,28 @@ public class FragOrderAdd extends Fragment {
             if (validation() < 0) {
                 Toast.makeText(getActivity(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             } else {
-                Product prod = prodDAO.getProdByName(binding.actvProd.getText().toString());
-                int pos = checkProd(list, binding.actvProd.getText().toString());
-                Order order = new Order(binding.tvOrderID.getText().toString(), binding.actvType.getText().toString());
-                OrderDetails details = new OrderDetails(prod, order, 1);
-                if (pos >= 0) {
-                    int soluong = list.get(pos).getQty();
-                    details.setQty(soluong + 1);
-                    list.set(pos, details);
-                } else {
-                    list.add(details);
+                int i = 0;
+                for (; i < arr.length; i++) {
+                    if (arr[i].equals(binding.actvType.getText().toString())) break;
                 }
-                adapter.changeDataset(list);
+                if (i == arr.length) {
+                    Toast.makeText(getContext(), "Loại DH chỉ có thể \"Nhập/Xuất\"", Toast.LENGTH_SHORT).show();
+                } else {
+                    Product prod = prodDAO.getProdByName(binding.actvProd.getText().toString());
+                    int pos = checkProd(list, binding.actvProd.getText().toString());
+                    Order order = new Order(binding.tvOrderID.getText().toString(), binding.actvType.getText().toString());
+                    OrderDetails details = new OrderDetails(prod, order, 1);
+                    if (pos >= 0) {
+                        int soluong = list.get(pos).getQty();
+                        details.setQty(soluong + 1);
+                        list.set(pos, details);
+                    } else {
+                        list.add(details);
+                    }
+                    adapter.changeDataset(list);
+                }
             }
+
         } catch (Exception ex) {
             Log.e("Error", ex.toString());
         }

@@ -21,14 +21,9 @@ import com.zrapp.warehouse.Fragment.FragOrder.OrderDetailsActivity;
 import com.zrapp.warehouse.databinding.ItemOrderBinding;
 import com.zrapp.warehouse.model.Order;
 import com.zrapp.warehouse.R;
-import com.zrapp.warehouse.model.Product;
-
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> implements Filterable {
 
